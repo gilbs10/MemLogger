@@ -122,16 +122,18 @@ def parse_it():
 def main():
     parser = argparse.ArgumentParser(description="Log the memory and cpu consumption of a process.")
     action_group = parser.add_mutually_exclusive_group()
-    action_group.add_argument('-l', '--log', action='store_const', dest='action', const='log', default='log')
-    action_group.add_argument('-d', '--display', action='store_const', dest='action', const='parse')
+    action_group.add_argument('-l', '--log', action='store_const', dest='action', const='log', default='log', help='Run the logger.')
+    action_group.add_argument('-d', '--display', action='store_const', dest='action', const='parse', help='Run the parser.')
     # logging arguments
-    parser.add_argument('command', type=str, nargs='*', default=None)
-    parser.add_argument( '-p', '--pid', type=int)
-    parser.add_argument('-r', '--rate', type=float, default=DEFAULT_SAMPLE_RATE)
-    parser.add_argument('-t', '--duration', type=float)
-    parser.add_argument('-f', '--flush-rate', type=int, default=DEFAULT_FLUSH_RATE)
+    parser.add_argument('command', type=str, nargs='*', default=None, help='A command to run and log.')
+    parser.add_argument( '-p', '--pid', type=int, help='A process id to log.')
+    parser.add_argument('-r', '--rate', type=float, default=DEFAULT_SAMPLE_RATE,
+                        help=f'Sampling rate in seconds. Default={DEFAULT_SAMPLE_RATE}.')
+    parser.add_argument('-t', '--duration', type=float, help='Time duration to log.')
+    parser.add_argument('-f', '--flush-rate', type=int, default=DEFAULT_FLUSH_RATE,
+                        help=f'How many samples to hold until writing to file. Default={DEFAULT_FLUSH_RATE}')
     parser.add_argument('-o', '--output-file', type=str, default=DEFAULT_OUTPUT_FILE)
-    parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Write log to stdout.')
 
     args = parser.parse_args()
     if args.action == 'log':
